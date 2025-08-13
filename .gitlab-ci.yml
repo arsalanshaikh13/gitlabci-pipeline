@@ -1,0 +1,9 @@
+image: alpine:latest
+
+creating basic templates
+using templates from common template project
+running child pipeline from same project
+running child pipeline from another project
+setting up github actions trigger to gitlabci
+setting up github repo
+child pipeline
