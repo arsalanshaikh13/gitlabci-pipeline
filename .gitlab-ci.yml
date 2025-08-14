@@ -1,9 +1,67 @@
 image: alpine:latest
 
-creating basic templates
-using templates from common template project
-running child pipeline from same project
-running child pipeline from another project
-setting up github actions trigger to gitlabci
-setting up github repo
-child pipeline
+workflow:
+  rules:
+    - if: "$CI_COMMIT_BRANCH == 'main'"
+
+variables:
+  RunTest:
+    value: "YES"
+    description: "Provide YES or NO to run test or not"
+
+stages:
+  - compile
+  - test
+  - package
+
+Compile:
+  stage: compile
+  script:
+    - |
+      echo "===================================="
+      echo "Maven build jofb from build steps"
+      echo "===================================="
+
+Test 1:
+  stage: test
+  script:
+    - |
+      echo "===================================="
+      echo "Test 1 job from test stage"
+      echo "===================================="
+      echo " $RunTest "
+  rules:
+    - if: "$RunTest == 'NO'"
+      when: never
+    - if: "$RunTest == 'YES'"
+
+Test 2:
+  stage: test
+  script:
+    - |
+      echo "===================================="
+      echo "Test 2 job from test stage"
+      echo "===================================="
+
+Test 3:
+  stage: test
+  before_script:
+    - |
+      echo "My installation commands"
+      whoami
+  script:
+    - |
+      echo "===================================="
+      echo "Test 3 job from test stage"
+      echo "===================================="
+
+Package:
+  stage: package
+  script:
+    - |
+      echo "===================================="
+      echo "Package job from package stage"
+      echo "===================================="
+  after_script:
+    - |
+      echo "My command after main script"
